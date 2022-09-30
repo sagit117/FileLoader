@@ -67,7 +67,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\FileLoader-1.0.0.jar;%APP_HOME%\lib\logback-classic-1.4.1.jar;%APP_HOME%\lib\annotations-23.0.0.jar;%APP_HOME%\lib\logback-core-1.4.1.jar;%APP_HOME%\lib\slf4j-api-2.0.1.jar
+set CLASSPATH=%APP_HOME%\lib\FileLoader-1.0.1.jar;%APP_HOME%\lib\logback-classic-1.4.1.jar;%APP_HOME%\lib\annotations-23.0.0.jar;%APP_HOME%\lib\logback-core-1.4.1.jar;%APP_HOME%\lib\slf4j-api-2.0.1.jar
 
 
 @rem Execute FileLoader
