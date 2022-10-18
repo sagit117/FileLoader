@@ -1,6 +1,6 @@
 package ru.axel;
 
-import ru.axel.fileloader.FileLoaderImpl;
+import ru.axel.fileloader.FileLoader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,7 +10,7 @@ public class Main {
         var url = Main.class.getResource("/templates/index.html");
 
         assert url != null;
-        var file = new FileLoaderImpl(url);
+        var file = new FileLoader(url);
 
         System.out.println("Mime: " + file.getMineFile());
     }
