@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -21,13 +23,13 @@ public final class FileLoader implements IFileLoader {
         url = new URL(path);
         file = new File(url.toURI());
     }
-    public FileLoader(@NotNull URL url) throws URISyntaxException {
-        this.url = url;
+    public FileLoader(@NotNull URL path) throws URISyntaxException {
+        url = path;
         file = new File(this.url.toURI());
     }
 
     /**
-     * Метод возвращает массив байтов файла
+     * Метод возвращает массив байтов файла. Не требуется автозакрытие ресурса.
      * @return массив байтов файла
      * @throws IOException ошибка чтения файла
      */
@@ -37,13 +39,24 @@ public final class FileLoader implements IFileLoader {
     }
 
     /**
-     * Метод возвращает список строк файла
-     * @return список строк файла
+     * Метод возвращает список строк файла. Не требуется автозакрытие ресурса.
+     * @return список строк файла в кодировке UTF_8.
      * @throws IOException ошибка чтения файла
      */
     @Override
     public List<String> getFileData() throws IOException {
-        return Files.readAllLines(file.toPath());
+        return getFileData(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Метод возвращает список строк файла. Не требуется автозакрытие ресурса.
+     * @param charset кодировка.
+     * @return список строк файла
+     * @throws IOException ошибка чтения файла
+     */
+    @Override
+    public List<String> getFileData(Charset charset) throws IOException {
+        return Files.readAllLines(file.toPath(), charset);
     }
 
     /**
@@ -52,7 +65,7 @@ public final class FileLoader implements IFileLoader {
      */
     @Override
     public String getFileExtension() {
-        var splitUrl = url.getPath().split("\\.");
+        final String[] splitUrl = url.getPath().split("\\.");
 
         if (splitUrl.length > 0) {
             return splitUrl[splitUrl.length - 1];
