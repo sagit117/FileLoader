@@ -2,7 +2,6 @@ package ru.axel.fileloader;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -10,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -17,15 +17,12 @@ import java.util.List;
  */
 public final class FileLoader implements IFileLoader {
     private final URL url;
-    private final File file;
 
-    public FileLoader(String path) throws MalformedURLException, URISyntaxException {
+    public FileLoader(String path) throws MalformedURLException {
         url = new URL(path);
-        file = new File(url.toURI());
     }
-    public FileLoader(@NotNull URL path) throws URISyntaxException {
+    public FileLoader(@NotNull URL path) {
         url = path;
-        file = new File(this.url.toURI());
     }
 
     /**
@@ -34,8 +31,8 @@ public final class FileLoader implements IFileLoader {
      * @throws IOException ошибка чтения файла
      */
     @Override
-    public byte @NotNull [] getBytes() throws IOException {
-        return Files.readAllBytes(file.toPath());
+    public byte @NotNull [] getBytes() throws IOException, URISyntaxException {
+        return Files.readAllBytes(Path.of(url.toURI()));
     }
 
     /**
@@ -44,7 +41,7 @@ public final class FileLoader implements IFileLoader {
      * @throws IOException ошибка чтения файла
      */
     @Override
-    public List<String> getFileData() throws IOException {
+    public List<String> getFileData() throws IOException, URISyntaxException {
         return getFileData(StandardCharsets.UTF_8);
     }
 
@@ -55,8 +52,8 @@ public final class FileLoader implements IFileLoader {
      * @throws IOException ошибка чтения файла
      */
     @Override
-    public List<String> getFileData(Charset charset) throws IOException {
-        return Files.readAllLines(file.toPath(), charset);
+    public List<String> getFileData(Charset charset) throws IOException, URISyntaxException {
+        return Files.readAllLines(Path.of(url.toURI()), charset);
     }
 
     /**
@@ -80,7 +77,7 @@ public final class FileLoader implements IFileLoader {
      * @throws IOException ошибка чтения файла
      */
     @Override
-    public String getMineFile() throws IOException {
-        return Files.probeContentType(file.toPath());
+    public String getMineFile() throws IOException, URISyntaxException {
+        return Files.probeContentType(Path.of(url.toURI()));
     }
 }
